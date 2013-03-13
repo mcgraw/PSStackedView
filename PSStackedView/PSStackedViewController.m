@@ -57,6 +57,7 @@ typedef void(^PSSVSimpleBlock)(void);
 @synthesize largeLeftInset = largeLeftInset_;
 @synthesize viewControllers = viewControllers_;
 @synthesize floatIndex = floatIndex_;
+@synthesize overlayViewController = overlayViewController_;
 @synthesize rootViewController = rootViewController_;
 @synthesize panRecognizer = panRecognizer_;
 @synthesize delegate = delegate_;
@@ -109,6 +110,8 @@ typedef void(^PSSVSimpleBlock)(void);
     largeLeftInset_ = 200;
     
     [self configureGestureRecognizer];
+    
+    //[self initOverlayViewController];
     
     enableBounces_ = YES;
     enableShadows_ = YES;
@@ -167,6 +170,78 @@ typedef void(^PSSVSimpleBlock)(void);
     }
     
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+#pragma mark - Overlay
+
+- (void)initOverlayViewController {
+    CGRect s = [[UIScreen mainScreen] bounds];
+    UIViewController *overlay = [[UIViewController alloc] init];
+    [[overlay view] setFrame:CGRectMake(0, 0, s.size.width, s.size.height)];
+    [[overlay view] setAlpha:0.0];
+    
+    [self insertOverlayViewController:overlay];
+}
+
+- (void)insertOverlayViewController:(UIViewController *)viewController {    
+    overlayViewController_ = viewController;
+    
+    if ([self overlayViewController]) {
+        [self.view addSubview:[[self overlayViewController] view]];
+        [[[self overlayViewController] view] setFrame:CGRectMake(0, 0, self.view.size.width, self.view.size.height)];
+        [[[self overlayViewController] view] setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
+    }
+    
+    [[self view] bringSubviewToFront:[[self overlayViewController] view]];
+}
+
+- (void)presentOverlayViewControllerWithView:(UIView *)view {
+    [self insertGestureTapViewBackground];
+    
+    [[[self overlayViewController] view] addSubview:view];
+    
+    [UIView animateWithDuration:0.225 animations:^{
+        [[[self overlayViewController] view] setAlpha:1.0];
+    }];
+    
+    [[self view] bringSubviewToFront:[[self overlayViewController] view]];
+}
+
+- (void)dismissOverlayViewController {
+    [UIView animateWithDuration:0.225 animations:^{
+        [[[self overlayViewController] view] setAlpha:0.0];
+    } completion:^(BOOL finished) {
+        [self clearOverlayViewController];
+    }];
+}
+
+- (void)dismissOverlayViewController:(UITapGestureRecognizer *)gesture {
+    [self dismissOverlayViewController];
+}
+
+- (void)insertGestureTapViewBackground {
+    UIView *tapView = [[UIView alloc] initWithFrame:[[[self overlayViewController] view] frame]];
+    
+    UITapGestureRecognizer *tapToRemove = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissOverlayViewController:)];
+    [tapToRemove setNumberOfTapsRequired:1];
+    [tapView addGestureRecognizer:tapToRemove];
+    
+    [[[self overlayViewController] view] addSubview:tapView];
+    
+    // disable pan gesture
+    [panRecognizer_ setEnabled:NO];
+}
+
+- (void)clearOverlayViewController {
+    [[[[self overlayViewController] view] subviews] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        [obj removeFromSuperview];
+    }];
+    
+    // enable pan gesture
+    [panRecognizer_ setEnabled:YES];
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 

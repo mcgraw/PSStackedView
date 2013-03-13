@@ -23,6 +23,15 @@ enum {
 /// the root controller gets the whole background view
 - (id)initWithRootViewController:(UIViewController *)rootViewController;
 
+// add an overlay view controller that will stay on top of the stack
+- (void)insertOverlayViewController:(UIViewController *)viewController;
+
+// show the overlay, if the user taps anywhere, other than your added view, the view will dismiss
+- (void)presentOverlayViewControllerWithView:(UIView *)view;
+
+// remove the overlay
+- (void)dismissOverlayViewController;
+
 /// Uses a horizontal slide transition. Has no effect if the view controller is already in the stack.
 /// baseViewController is used to remove subviews if a previous controller invokes a new view. can be nil.
 - (void)pushViewController:(UIViewController *)viewController fromViewController:(UIViewController *)baseViewController animated:(BOOL)animated;
@@ -87,6 +96,9 @@ enum {
 
 /// first view controller
 @property(nonatomic, readonly, strong) UIViewController *firstViewController;
+
+/// overlay view controller
+@property(nonatomic, readonly, strong) UIViewController *overlayViewController;
 
 /// represents current state via floating point. shows edge attaches, menu docking, etc
 @property(nonatomic, readonly, assign) CGFloat floatIndex;
