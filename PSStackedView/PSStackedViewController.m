@@ -18,6 +18,7 @@
 #define kPSSVStackAnimationPopDuration kPSSVStackAnimationSpeedModifier * 0.25f
 #define kPSSVMaxSnapOverOffset 20
 #define kPSSVAssociatedBaseViewControllerKey @"kPSSVAssociatedBaseViewController"
+#define KPSSVStackOverlayDismissedNotification @"kPSStackOverlayControllerDismissed"
 
 // reduces alpha over overlapped view controllers. 1.f would totally black-out on complete overlay
 #define kAlphaReductRatio 10.f
@@ -218,6 +219,8 @@ typedef void(^PSSVSimpleBlock)(void);
 
 - (void)dismissOverlayViewController:(UITapGestureRecognizer *)gesture {
     [self dismissOverlayViewController];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:KPSSVStackOverlayDismissedNotification object:nil];
 }
 
 - (void)insertGestureTapViewBackground {
