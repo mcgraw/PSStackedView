@@ -215,12 +215,12 @@ typedef void(^PSSVSimpleBlock)(void);
     } completion:^(BOOL finished) {
         [self clearOverlayViewController];
     }];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:KPSSVStackOverlayDismissedNotification object:nil];
 }
 
 - (void)dismissOverlayViewController:(UITapGestureRecognizer *)gesture {
     [self dismissOverlayViewController];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:KPSSVStackOverlayDismissedNotification object:nil];
 }
 
 - (void)insertGestureTapViewBackground {
