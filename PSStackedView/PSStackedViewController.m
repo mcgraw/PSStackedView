@@ -202,6 +202,13 @@ typedef void(^PSSVSimpleBlock)(void);
     [[self view] bringSubviewToFront:[[self overlayViewController] view]];
 }
 
+- (void)updateOverlayViewControllerForOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    if(UIInterfaceOrientationIsLandscape(interfaceOrientation))
+        [[[self overlayViewController] view] setFrame:CGRectMake(0, 0, 1024, 748)];
+    else if UIInterfaceOrientationIsPortrait(interfaceOrientation)
+        [[[self overlayViewController] view] setFrame:CGRectMake(0, 0, 768, 1004)];
+}
+
 - (void)presentOverlayViewControllerWithView:(UIView *)view {
     [self insertGestureTapViewBackground];
     
@@ -1623,6 +1630,8 @@ enum {
     
     // enlarge/shrinken stack
     [self alignStackAnimated:!self.isReducingAnimations];
+    
+    [self updateOverlayViewControllerForOrientation:toInterfaceOrientation];
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
