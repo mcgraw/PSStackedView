@@ -181,7 +181,7 @@ typedef void(^PSSVSimpleBlock)(void);
     if(UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]))
         [[overlay view] setFrame:CGRectMake(0, 0, 1024, 748)];
     else if UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation])
-        [[overlay view] setFrame:CGRectMake(0, 0, 748, 1024)];
+        [[overlay view] setFrame:CGRectMake(0, 0, 768, 1004)];
     [[overlay view] setAlpha:0.0];
     
     [self insertOverlayViewController:overlay];
@@ -195,7 +195,7 @@ typedef void(^PSSVSimpleBlock)(void);
         if(UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]))
             [[[self overlayViewController] view] setFrame:CGRectMake(0, 0, 1024, 748)];
         else if UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation])
-            [[[self overlayViewController] view] setFrame:CGRectMake(0, 0, 748, 1024)];
+            [[[self overlayViewController] view] setFrame:CGRectMake(0, 0, 768, 1004)];
         [[[self overlayViewController] view] setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
     }
     
