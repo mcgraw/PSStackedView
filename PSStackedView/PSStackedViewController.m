@@ -177,9 +177,11 @@ typedef void(^PSSVSimpleBlock)(void);
 #pragma mark - Overlay
 
 - (void)initOverlayViewController {
-    CGRect s = [[UIScreen mainScreen] bounds];
     UIViewController *overlay = [[UIViewController alloc] init];
-    [[overlay view] setFrame:CGRectMake(0, 0, s.size.width, s.size.height)];
+    if(UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]))
+        [[overlay view] setFrame:CGRectMake(0, 0, 1024, 748)];
+    else if UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation])
+        [[overlay view] setFrame:CGRectMake(0, 0, 748, 1024)];
     [[overlay view] setAlpha:0.0];
     
     [self insertOverlayViewController:overlay];
@@ -190,7 +192,10 @@ typedef void(^PSSVSimpleBlock)(void);
     
     if ([self overlayViewController]) {
         [self.view addSubview:[[self overlayViewController] view]];
-        [[[self overlayViewController] view] setFrame:CGRectMake(0, 0, self.view.size.width, self.view.size.height)];
+        if(UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]))
+            [[[self overlayViewController] view] setFrame:CGRectMake(0, 0, 1024, 748)];
+        else if UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation])
+            [[[self overlayViewController] view] setFrame:CGRectMake(0, 0, 748, 1024)];
         [[[self overlayViewController] view] setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
     }
     
