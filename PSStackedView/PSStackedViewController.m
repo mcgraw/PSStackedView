@@ -898,7 +898,7 @@ enum {
             if (enableDraggingPastInsets_ == NO)
             {
                 int stackWidth = (!isTopViewController) ? 0 : (leftViewController) ? leftViewController.view.frame.size.width : (rightViewController) ? rightViewController.view.frame.size.width : 0;
-                int padding  = 45;
+                int padding  = 0;
                 if ((int)(currentVCLeftPosition-stackWidth) <= (int)leftInset_ ) {
                     currentVCLeftPosition = leftInset_ + stackWidth;
                 }
