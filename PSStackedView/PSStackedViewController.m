@@ -1107,14 +1107,7 @@ enum {
     }
     
     // Starting out in portrait, right side up, we see a 20 pixel gap (for status bar???)
-    //TODO: include check to optionally add the 20pt offset
-    if ([[[UIDevice currentDevice] systemVersion] compare:@"7.0" options:NSNumericSearch] == NSOrderedAscending) {
-        //i0S 6
-        viewController.view.top = 0.f;
-    } else {
-        //iOS 7+ statusbar
-        viewController.view.top = 20.f;
-    }
+    viewController.view.top = 0.f;
     
     [self delegateWillInsertViewController:viewController];
     
