@@ -178,10 +178,19 @@ typedef void(^PSSVSimpleBlock)(void);
 
 - (void)initOverlayViewController {
     UIViewController *overlay = [[UIViewController alloc] init];
-    if(UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]))
-        [[overlay view] setFrame:CGRectMake(0, 0, 1024, 748)];
-    else if UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation])
-        [[overlay view] setFrame:CGRectMake(0, 0, 768, 1004)];
+    if(UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])) {
+        if ([[[UIDevice currentDevice] systemVersion] compare:@"7.0" options:NSNumericSearch] == NSOrderedAscending) {
+            [[overlay view] setFrame:CGRectMake(0, 0, 1024, 748)];
+        } else {
+            [[overlay view] setFrame:CGRectMake(0, 0, 1024, 768)];
+        }
+    } else if UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]) {
+     	if ([[[UIDevice currentDevice] systemVersion] compare:@"7.0" options:NSNumericSearch] == NSOrderedAscending) {
+            [[overlay view] setFrame:CGRectMake(0, 0, 768, 1004)];
+        } else {
+            [[overlay view] setFrame:CGRectMake(0, 0, 768, 1024)];
+        }
+    }
     [[overlay view] setAlpha:0.0];
     
     [self insertOverlayViewController:overlay];
@@ -192,10 +201,19 @@ typedef void(^PSSVSimpleBlock)(void);
     
     if ([self overlayViewController]) {
         [self.view addSubview:[[self overlayViewController] view]];
-        if(UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]))
-            [[[self overlayViewController] view] setFrame:CGRectMake(0, 0, 1024, 748)];
-        else if UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation])
-            [[[self overlayViewController] view] setFrame:CGRectMake(0, 0, 768, 1004)];
+        if(UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])) {
+            if ([[[UIDevice currentDevice] systemVersion] compare:@"7.0" options:NSNumericSearch] == NSOrderedAscending) {
+                [[[self overlayViewController] view] setFrame:CGRectMake(0, 0, 1024, 748)];
+            } else {
+                [[[self overlayViewController] view] setFrame:CGRectMake(0, 0, 1024, 768)];
+            }
+        } else if UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]) {
+            if ([[[UIDevice currentDevice] systemVersion] compare:@"7.0" options:NSNumericSearch] == NSOrderedAscending) {
+                [[[self overlayViewController] view] setFrame:CGRectMake(0, 0, 768, 1004)];
+            } else {
+                [[[self overlayViewController] view] setFrame:CGRectMake(0, 0, 768, 1024)];
+            }
+        }
         [[[self overlayViewController] view] setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
     }
     
@@ -203,10 +221,19 @@ typedef void(^PSSVSimpleBlock)(void);
 }
 
 - (void)updateOverlayViewControllerForOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    if(UIInterfaceOrientationIsLandscape(interfaceOrientation))
-        [[[self overlayViewController] view] setFrame:CGRectMake(0, 0, 1024, 748)];
-    else if UIInterfaceOrientationIsPortrait(interfaceOrientation)
-        [[[self overlayViewController] view] setFrame:CGRectMake(0, 0, 768, 1004)];
+    if(UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
+        if ([[[UIDevice currentDevice] systemVersion] compare:@"7.0" options:NSNumericSearch] == NSOrderedAscending) {
+            [[[self overlayViewController] view] setFrame:CGRectMake(0, 0, 1024, 748)];
+        } else {
+            [[[self overlayViewController] view] setFrame:CGRectMake(0, 0, 1024, 768)];
+        }
+    } else if UIInterfaceOrientationIsPortrait(interfaceOrientation) {
+        if ([[[UIDevice currentDevice] systemVersion] compare:@"7.0" options:NSNumericSearch] == NSOrderedAscending) {
+            [[[self overlayViewController] view] setFrame:CGRectMake(0, 0, 768, 1004)];
+        } else {
+            [[[self overlayViewController] view] setFrame:CGRectMake(0, 0, 768, 1024)];
+        }
+    }
 }
 
 - (void)presentOverlayViewControllerWithView:(UIView *)view {
