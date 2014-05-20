@@ -42,6 +42,7 @@ typedef void(^PSSVSimpleBlock)(void);
         unsigned int delegateWillRemoveViewController:1;
         unsigned int delegateDidRemoveViewController:1;
         unsigned int delegateDidPanViewController:1;
+        unsigned int delegateShouldPanViewController:1;
         unsigned int delegateDidAlign:1;
     }delegateFlags_;
 }
@@ -311,6 +312,7 @@ typedef void(^PSSVSimpleBlock)(void);
         delegateFlags_.delegateWillRemoveViewController = [delegate respondsToSelector:@selector(stackedView:willRemoveViewController:)];
         delegateFlags_.delegateDidRemoveViewController = [delegate respondsToSelector:@selector(stackedView:didRemoveViewController:)];
         delegateFlags_.delegateDidPanViewController = [delegate respondsToSelector:@selector(stackedView:didPanViewController:byOffset:)];
+        delegateFlags_.delegateShouldPanViewController = [delegate respondsToSelector:@selector(stackedViewShouldHandlePan:)];
         delegateFlags_.delegateDidAlign = [delegate respondsToSelector:@selector(stackedViewDidAlign:)];
 
     }
@@ -343,6 +345,14 @@ typedef void(^PSSVSimpleBlock)(void);
 - (void)delegateDidPanViewController:(UIViewController *)viewController byOffset:(NSInteger)offset {
     if (delegateFlags_.delegateDidPanViewController) {
         [self.delegate stackedView:self didPanViewController:viewController byOffset:offset];
+    }
+}
+
+- (BOOL)delegateShouldPanViewController {
+    if (delegateFlags_.delegateShouldPanViewController) {
+        return [self.delegate stackedViewShouldHandlePan:self];
+    } else {
+        return YES;
     }
 }
 
@@ -989,6 +999,9 @@ enum {
 }
 
 - (void)handlePanFrom:(UIPanGestureRecognizer *)recognizer {    
+    if (![self delegateShouldPanViewController])
+        return;
+    
     CGPoint translatedPoint = [recognizer translationInView:self.view];
     UIGestureRecognizerState state = recognizer.state;
     

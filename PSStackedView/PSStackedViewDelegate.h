@@ -30,6 +30,9 @@
 /// viewController has been panned
 - (void)stackedView:(PSStackedViewController *)stackedView didPanViewController:(UIViewController *)viewController byOffset:(NSInteger)offset;
 
+/// allow delegate to determine if the stackView should handle pans (useful for conditionally locking views). Default is YES
+- (BOOL)stackedViewShouldHandlePan:(PSStackedViewController *)stackedView;
+
 /// viewController has been aligned (programmatically or by result of panning)
 - (void)stackedViewDidAlign:(PSStackedViewController *)stackedView;
 
